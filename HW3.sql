@@ -173,7 +173,7 @@ FROM CongTy LEFT JOIN DuAn ON CongTy.MaCongTy=DuAn.MaCongTy
 GROUP BY TenCongTy
 
 -- 15. Tìm kỹ năng được sở hữu bởi nhiều chuyên gia nhất.
-SELECT TOP 1 k.TenKyNang, COUNT(ck.MaChuyenGia) AS SoChuyenGia
+SELECT TOP 1 WITH TIES k.TenKyNang, COUNT(ck.MaChuyenGia) AS SoChuyenGia
 FROM ChuyenGia_KyNang ck
 JOIN KyNang k ON ck.MaKyNang = k.MaKyNang
 GROUP BY k.TenKyNang
@@ -188,7 +188,7 @@ WHERE MaKyNang IN (SELECT MaKyNang
 	AND CapDo>=4;
 
 -- 17. Tìm dự án có nhiều chuyên gia tham gia nhất.
-SELECT TOP 1 d.TenDuAn, COUNT(cd.MaChuyenGia) AS SoChuyenGia
+SELECT TOP 1 WITH TIES d.TenDuAn, COUNT(cd.MaChuyenGia) AS SoChuyenGia
 FROM ChuyenGia_DuAn cd
 JOIN DuAn d ON cd.MaDuAn = d.MaDuAn
 GROUP BY d.TenDuAn
@@ -258,7 +258,7 @@ WHERE MaKyNang IN
 		WHERE TenKyNang='Python')
 
 -- 76. Tìm chuyên gia có số lượng kỹ năng nhiều nhất.
-SELECT TOP 1 HoTen, ChuyenGia.MaChuyenGia, COUNT(MaKyNang) AS SoLuongKyNang
+SELECT TOP 1 WITH TIES HoTen, ChuyenGia.MaChuyenGia, COUNT(MaKyNang) AS SoLuongKyNang
 FROM ChuyenGia_KyNang JOIN ChuyenGia ON ChuyenGia_KyNang.MaChuyenGia=ChuyenGia.MaChuyenGia
 GROUP BY ChuyenGia.MaChuyenGia,ChuyenGia.HoTen
 ORDER BY SoLuongKyNang DESC;
@@ -274,7 +274,7 @@ WHERE
 	cg1.MaChuyenGia<cg2.MaChuyenGia
 
 -- 78. Tìm công ty có tổng số năm kinh nghiệm của các chuyên gia trong dự án cao nhất.
-SELECT TOP 1 TenCongTy, SUM(NamKinhNghiem) AS TongNamKinhNghiem
+SELECT TOP 1 WITH TIES TenCongTy, SUM(NamKinhNghiem) AS TongNamKinhNghiem
 FROM CongTy LEFT JOIN DuAn ON CongTy.MaCongTy=DuAn.MaCongTy
 	LEFT JOIN ChuyenGia_DuAn ON ChuyenGia_DuAn.MaDuAn=DuAn.MaDuAn
 	LEFT JOIN ChuyenGia ON ChuyenGia.MaChuyenGia=ChuyenGia_DuAn.MaChuyenGia
